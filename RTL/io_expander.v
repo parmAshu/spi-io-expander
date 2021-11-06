@@ -2,6 +2,10 @@
 @author : Ashutosh Singh Parmar
 @brief : This file contains design for 32 line, SPI input-output expander module
 */
+`inlcude "spi_module.v"
+`include "port.v"
+`include "address_generator.v"
+`include "address_decoder.v"
 
 module SPI_IO_EXPANDER(
     input mosi,
@@ -21,12 +25,9 @@ wire internalRW;
 
 wire [15:0] selectLine;
 
-// R/W bit in the address byte
-assign internalRW <= addressBus[7] && addrSel;
-
 SPI_MODULE S0( .mosi(mosi), .miso(miso), .clk(clk), .en(en), .enOut(internalEnable), .rw(internalRW), .rst(rst), .dataBus(dataBus) );
 
-ADDRESS_GENERATOR AG0( .addrSel(addrSel), .en(internalEnable), .rst(rst), .dataBus(dataBus), .addressBus(addressBus) );
+ADDRESS_GENERATOR AG0( .addrSel(addrSel), .en(internalEnable), .rst(rst), .dataBus(dataBus), .addressBus(addressBus), .rw(internalRW) );
 
 ADDRESS_DECODER AD0( .addrBus(addressBus[2:0]), .selectLine(selectLine), .addrSel(addrSel) );
 

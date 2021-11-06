@@ -7,9 +7,13 @@ module ADDRESS_GENERATOR(
     input addrSel,
     input en,
     input rst,
+    input addrSel,
+    output rw,
     inout [7:0] dataBus,
     output reg [3:0] addressBus
 );
+
+assign rw <= addrSel && addressBus[7];
 
 /* RESET OPERATION ---*/
 
